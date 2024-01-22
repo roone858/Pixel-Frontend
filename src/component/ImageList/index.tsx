@@ -7,7 +7,7 @@ const ImageList = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch("http://localhost:3000/resource/");
+        const response = await fetch("http://localhost:3000/resource");
         const images = await response.json();
 
         setImages(images);
@@ -21,7 +21,7 @@ const ImageList = () => {
   return (
     <div className="flex flex-wrap gap-5 justify-center items-center p-20">
       {/*eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-      {images.map((image: any, index) => (
+      {images?.map((image: any, index) => (
         <div
           key={index}
           className="image-container w-60 h-60 shadow overflow-hidden  border "
