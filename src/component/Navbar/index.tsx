@@ -16,7 +16,7 @@ export default function Navbar() {
   return (
     <>
       <div>
-        <nav className="relative px-6 py-6 flex justify-between items-center bg-[#FFEDE5] z-50 ">
+        <nav className="relative px-6 py-4 flex justify-between items-center bg-[#FFEDE5] z-50  ">
           <a
             className="text-3xl text-orange-500 font-bold leading-none flex"
             href="#"

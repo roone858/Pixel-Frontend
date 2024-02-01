@@ -1,8 +1,15 @@
+import { useState } from "react";
 import imageOne from "../../assets/_23-2151120057.avif";
 import imageTow from "../../assets/_52683-148822.avif";
 import imageThree from "../../assets/_52683-90115.avif";
 import imageFour from "../../assets/_52683-92622.avif";
 const Home = () => {
+  const [searchValue, setSearchValue] = useState("");
+  const [select, setSelect] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    window.location.href = `/search?query=${searchValue}`;
+  };
   return (
     <div className="flex-grow relative hero-section flex flex-col items-center p-20 pb-10 bg-[#FFEDE5] text-center">
       <div>
@@ -18,8 +25,12 @@ const Home = () => {
         </div>
         <div className="box pt-6 px-32">
           <div className="box-wrapper">
-            <div className=" bg-white rounded flex items-center w-full p-4 shadow-sm border border-gray-200">
-              <button className="outline-none focus:outline-none">
+            <form
+              method="#"
+              onSubmit={handleSubmit}
+              className=" bg-white rounded flex items-center w-full p-4 shadow-sm border border-gray-200"
+            >
+              <button type="submit" className="outline-none focus:outline-none">
                 <svg
                   className=" w-10 text-gray-600 h-5 cursor-pointer"
                   fill="none"
@@ -32,9 +43,11 @@ const Home = () => {
                   <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </button>
+
               <input
                 type="search"
-                name=""
+                name="search"
+                onChange={(e) => setSearchValue(e.target.value)}
                 placeholder="البحث عن صور"
                 x-model="q"
                 className="w-full pl-4 text-sm outline-none focus:outline-none bg-transparent"
@@ -43,15 +56,16 @@ const Home = () => {
                 <select
                   defaultValue={"photo"}
                   x-model="image_type"
+                  onChange={(e) => setSelect(e.target.value)}
                   className="text-sm outline-none focus:outline-none bg-transparent"
                 >
-                  <option value="all">تصنيف</option>
-                  <option value="photo">صورة</option>
+                  <option value="categories">تصنيف</option>
+                  <option value="resource">صور</option>
                   <option value="illustration">رسمة</option>
                   <option value="vector">فيكتور</option>
                 </select>
               </div>
-            </div>
+            </form>
           </div>
         </div>
         <div className="flex flex-row gap-12 justify-center items-center mt-20">

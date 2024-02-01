@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import authService from "../../services/auth.service";
+import { AuthContext } from "../../context/AuthContext";
 
 const AvatarWithDropdown = () => {
   const [open, setOpen] = useState(false);
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="flex justify-center items-center dark:bg-gray-500">
@@ -27,11 +29,11 @@ const AvatarWithDropdown = () => {
               />
             </div> */}
             <div className="font-semibold dark:text-white text-gray-500 text-sm">
-              <div className="cursor-pointer"> محمود جمال</div>
+              <div className="cursor-pointer"> {user?.profile?.name}</div>
             </div>
           </div>
           {open && (
-            <div className="absolute w-56 px-5 py-3 text-sm dark:bg-gray-800 bg-white rounded-lg shadow border dark:border-transparent mt-5">
+            <div className="absolute w-52 px-5 py-3 text-sm dark:bg-gray-800 bg-white rounded-lg shadow border dark:border-transparent mt-5">
               <ul className="space-y-3 ">
                 <li className="font-medium">
                   <a

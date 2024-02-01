@@ -1,12 +1,38 @@
+import { useState } from "react";
 import { withAuth } from "../Login";
+import authService from "../../services/auth.service";
+import { SetTokenInSessionStorage } from "../../utils/sessionStorage";
 
 const Register = () => {
+  const [data, setData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    name: "",
+  });
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setData((prevData) => ({ ...prevData, [e.target.name]: e.target.value }));
+  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const newUser = {
+      ...data,
+      profile: { name: data.name },
+    };
+    await authService
+      .register(newUser)
+      .then((res) => {
+        SetTokenInSessionStorage(res.user["access_token"]);
+        window.location.href = "/";
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div id="main-wrapper" className="oxyy-register-register">
       <div className="container-fluid px-0">
         <div className="flex min-h-screen">
           {/* Login Form */}
-          <div className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 bg-gray-100 shadow-lg order-2 md:order-1 flex flex-col  ">
+          <div className="flex-shrin  k-0 w-full md:w-1/2 lg:w-1/3 bg-gray-100 shadow-lg order-2 md:order-1 flex flex-col  ">
             <div className="p-8  my-auto py-5">
               <div className="mx-auto text-center">
                 <div className="mb-6">
@@ -26,45 +52,57 @@ const Register = () => {
                 </div>
                 <form
                   id="loginForm"
+                  method="#"
+                  onSubmit={handleSubmit}
                   className="bg-white p-8 rounded-md shadow-md"
                 >
                   <div className="mb-6">
                     <input
+                      onChange={handleChangeInput}
                       type="text"
                       className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
-                      id="emailAddress"
+                      id="name"
+                      name="name"
                       placeholder="الاسم كامل"
                     />
                   </div>
                   <div className="mb-6">
                     <input
-                      type="text"
+                      onChange={handleChangeInput}
+                      type="username"
+                      name="username"
+                      id="username"
                       className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
-                      id="emailAddress"
                       placeholder="اسم المستخدم"
                     />
                   </div>
                   <div className="mb-6">
                     <input
                       type="email"
+                      name="email"
+                      id="email"
+                      onChange={handleChangeInput}
                       className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
-                      id="emailAddress"
                       placeholder="البريد الالكترونى"
                     />
                   </div>
                   <div className="mb-6">
                     <input
                       type="password"
+                      onChange={handleChangeInput}
                       className="w-full py-2 px-3 border-0 border-b  border-gray-300 focus:outline-none focus:border-orange-500 "
-                      id="loginPassword"
+                      id="password"
+                      name="password"
                       placeholder="كلمة المرور"
                     />
                   </div>
                   <div className="mb-6">
                     <input
-                      type="password"
+                      type="confirmPassword"
+                      name="confirmPassword"
+                      id="confirmPassword"
+                      onChange={handleChangeInput}
                       className="w-full py-2 px-3 border-0 border-b  border-gray-300 focus:outline-none focus:border-orange-500 "
-                      id="loginPassword"
                       placeholder="تـاكيد كلمة المرور"
                     />
                   </div>
@@ -72,6 +110,7 @@ const Register = () => {
                   <div className="form-check text-start my-4">
                     <input
                       id="agree"
+                      required
                       name="agree"
                       className="form-check-input"
                       type="checkbox"

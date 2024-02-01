@@ -1,6 +1,8 @@
 import Image from "../Image";
-
-const ImageGrid = ({ images }) => {
+interface ImageDetails {
+  fileName: string;
+}
+const ImageGrid = ({ images }: { images: ImageDetails[] }) => {
   const groupedImages = [];
 
   // Group images into sets of three
@@ -9,10 +11,10 @@ const ImageGrid = ({ images }) => {
   }
   return (
     <div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-20">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-20 py-5">
         {groupedImages.map((imageGroup, groupIndex) => (
           <div key={groupIndex} className="grid gap-4">
-            {imageGroup.map((image, index) => (
+            {imageGroup.map((image: ImageDetails, index: number) => (
               <div key={index}>
                 <Image
                   className="h-auto max-w-full rounded-lg"
@@ -24,7 +26,7 @@ const ImageGrid = ({ images }) => {
           </div>
         ))}
       </div>
-    </div>     
+    </div>
   );
 };
 
