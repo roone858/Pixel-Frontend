@@ -1,7 +1,8 @@
-import { ChangeEvent, FormEvent, useContext, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import authService from "../../services/auth.service";
 import { SetTokenInSessionStorage } from "../../utils/sessionStorage";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -23,7 +24,13 @@ const Login = () => {
       SetTokenInSessionStorage(response["access_token"]);
     window.location.href = "/";
   };
-
+  const { isAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
   return (
     <div id="main-wrapper" className="oxyy-login-register">
       <div className="container-fluid px-0">
@@ -122,19 +129,4 @@ const Login = () => {
   );
 };
 
-const withAuth = <P extends object>(
-  WrappedComponent: React.ComponentType<P>
-): React.FC<P> => {
-  const WithAuth: React.FC<P> = (props) => {
-    const { isLogin } = useContext(AuthContext);
-    if (isLogin) window.location.href = "/";
-    else return !isLogin ? <WrappedComponent {...props} /> : null;
-  };
-
-  return WithAuth;
-};
-
-const AuthenticatedComponent = withAuth(Login);
-export default AuthenticatedComponent;
-
-export { withAuth };
+export default Login;

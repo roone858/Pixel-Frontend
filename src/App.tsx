@@ -1,24 +1,17 @@
-import { setTokenInAxios } from "./utils/axios";
 import Navbar from "./component/Navbar";
-
 import Login from "./page/Login";
 import Home from "./page/Home";
 import Register from "./page/Register";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-
 import Search from "./page/Search";
 import ImageGrid from "./component/ImageGrid";
 import { useEffect, useState } from "react";
-import PaymentForm from "./component/PaymentForm";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
-const stripePromise = loadStripe(
-  "pk_test_51OM8bHDLQcvajEnuuNf6qIKGtgejp1tBjhQzN5NlcjErrePK9prFIVrJNiSuJ39RhrFtZo1EU1gy1WLqLL9TORWT00hoBBBcZ5"
-);
+import Plans from "./page/Plans";
+import PlanDetails from "./page/PlanDetails";
 function App() {
-  // setTokenInAxios("");
   const [images, setImages] = useState([]);
+
   useEffect(() => {
     const fetchImages = async () => {
       try {
@@ -43,16 +36,15 @@ function App() {
               element={
                 <div className="h-screen flex flex-col">
                   <Navbar />
-
                   <Home />
-                  {/* <ImageGrid images={images} /> */}
-                  {/* <Elements stripe={stripePromise}>
-                    <PaymentForm />
-                  </Elements> */}
+                  <ImageGrid images={images} />
                 </div>
               }
             />
             <Route path="/register" element={<Register />} />
+            <Route path="/plans" element={<Plans />}></Route>
+            <Route path="/plans/:id" element={<PlanDetails />} />
+
             <Route path="/login" element={<Login />} />
             <Route path="/search" element={<Search />} />
           </Routes>

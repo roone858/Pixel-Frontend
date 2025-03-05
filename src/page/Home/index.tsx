@@ -5,15 +5,14 @@ import imageThree from "../../assets/_52683-90115.avif";
 import imageFour from "../../assets/_52683-92622.avif";
 const Home = () => {
   const [searchValue, setSearchValue] = useState("");
-  const [select, setSelect] = useState("");
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     window.location.href = `/search?query=${searchValue}`;
   };
   return (
-    <div className="flex-grow relative hero-section flex flex-col items-center p-20 pb-10 bg-[#FFEDE5] text-center">
+    <div className="flex-grow relative hero-section flex flex-col items-center  p-20 px-32 pb-10 bg-[#FFEDE5] text-center">
       <div>
-        <div className="px-32">
+        <div className="">
           <h1 className="text-4xl font-bold text-neutral-950 mb-5 ">
             أستمتع بجمال اللحظة واحتفظ بها إلى الأبد.
           </h1>
@@ -23,7 +22,7 @@ const Home = () => {
             مختلفة.{" "}
           </p>
         </div>
-        <div className="box pt-6 px-32">
+        <div className="box pt-6 ">
           <div className="box-wrapper">
             <form
               method="#"
@@ -56,7 +55,7 @@ const Home = () => {
                 <select
                   defaultValue={"photo"}
                   x-model="image_type"
-                  onChange={(e) => setSelect(e.target.value)}
+                  // onChange={(e) => setSelect(e.target.value)}
                   className="text-sm outline-none focus:outline-none bg-transparent"
                 >
                   <option value="categories">تصنيف</option>
@@ -68,10 +67,10 @@ const Home = () => {
             </form>
           </div>
         </div>
-        <div className="flex flex-row gap-12 justify-center items-center mt-20">
+        <div className="flex flex-row gap-12 justify-center flex-wrap items-center mt-20">
           <div>
             <div className=" border-2 p-1  rounded-xl border-gray-500 overflow-hidden">
-              <div className="image-container w-[211px] h-[111px] overflow-hidden rounded-lg hover:scale-125 transition-all duration-500  ">
+              <div className="image-container w-[200px] h-[111px] overflow-hidden rounded-lg hover:scale-125 transition-all duration-500  ">
                 <img src={imageOne} className="object-cover " alt="" />
               </div>
             </div>
@@ -79,7 +78,7 @@ const Home = () => {
           </div>
           <div>
             <div className=" border-2 p-1  rounded-xl border-gray-500 overflow-hidden">
-              <div className="image-container w-[211px] h-[111px] overflow-hidden rounded-lg hover:scale-125 transition-all duration-500   ">
+              <div className="image-container w-[200px] h-[111px] overflow-hidden rounded-lg hover:scale-125 transition-all duration-500   ">
                 <img src={imageTow} className="object-cover" alt="" />
               </div>
             </div>
@@ -87,7 +86,7 @@ const Home = () => {
           </div>
           <div>
             <div className=" border-2 p-1  rounded-xl border-gray-500 overflow-hidden">
-              <div className="image-container w-[211px] h-[111px] overflow-hidden rounded-lg hover:scale-125 transition-all duration-500   ">
+              <div className="image-container w-[200px] h-[111px] overflow-hidden rounded-lg hover:scale-125 transition-all duration-500   ">
                 <img src={imageThree} className="object-cover" alt="" />
               </div>
             </div>
@@ -95,7 +94,7 @@ const Home = () => {
           </div>
           <div>
             <div className=" border-2 p-1  rounded-xl border-gray-500 overflow-hidden">
-              <div className="image-container w-[211px] h-[111px] overflow-hidden rounded-lg hover:scale-125 transition-all duration-500   ">
+              <div className="image-container w-[200px] h-[111px] overflow-hidden rounded-lg hover:scale-125 transition-all duration-500   ">
                 <img src={imageFour} alt="" className="object-cover" />
               </div>
             </div>

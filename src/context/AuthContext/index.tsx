@@ -10,37 +10,45 @@ import { getTokenInSessionStorage } from "../../utils/sessionStorage";
 import authService from "../../services/auth.service";
 
 interface AuthContextType {
-  isLogin: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  user: any;
-  setIsLogin: Dispatch<SetStateAction<boolean>>;
+  isAuthenticated: boolean;
+  user: unknown; // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
+  loading: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType>({
-  isLogin: false,
+  isAuthenticated: false,
   user: {},
-  setIsLogin: () => undefined,
+  setIsAuthenticated: () => undefined,
+  loading: true, // Default to loading
 });
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true); // New loading state
+
   useEffect(() => {
     if (getTokenInSessionStorage()) {
       authService
         .verifyToken()
         .then(() => {
-          setIsLogin(true);
+          setIsAuthenticated(true);
           authService.getProfile().then((user) => setUser(user));
         })
-        .catch(() => setIsLogin(false));
+        .catch(() => setIsAuthenticated(false))
+        .finally(() => setLoading(false)); // Mark loading as complete
+    } else {
+      setLoading(false); // No token, no need to wait
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLogin, user, setIsLogin }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, setIsAuthenticated, loading }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { withAuth } from "../Login";
 import authService from "../../services/auth.service";
 import { SetTokenInSessionStorage } from "../../utils/sessionStorage";
+import withAuth from "../../HOC/withAuth";
 
 const Register = () => {
   const [data, setData] = useState({
