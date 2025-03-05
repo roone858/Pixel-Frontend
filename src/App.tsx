@@ -9,16 +9,19 @@ import ImageGrid from "./component/ImageGrid";
 import { useEffect, useState } from "react";
 import Plans from "./page/Plans";
 import PlanDetails from "./page/PlanDetails";
+import Gallery from "./component/Gallery";
+import axios from "./utils/axios";
+import FileUpload from "./component/FileUplode";
 function App() {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch("http://localhost:3000/resource");
-        const images = await response.json();
-
-        setImages(images);
+        // const response = await fetch("http://localhost:3000/resource");
+        // const data = await response.json();
+        const response = await axios.get("http://localhost:3000/resource");
+        setImages(response.data);
       } catch (error) {
         console.error("Error fetching images:", error);
       }
@@ -41,6 +44,8 @@ function App() {
                 </div>
               }
             />
+            <Route path="/gallery" element={<Gallery images={images} />} />
+            <Route path="/upload" element={<FileUpload />} />
             <Route path="/register" element={<Register />} />
             <Route path="/plans" element={<Plans />}></Route>
             <Route path="/plans/:id" element={<PlanDetails />} />
