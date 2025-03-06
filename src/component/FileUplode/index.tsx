@@ -3,11 +3,10 @@ import axios from "../../utils/axios";
 
 const MultipleFileUpload = () => {
   const [selectedFiles, setSelectedFiles] = useState<
-    { file: File; title: string; description: string }[]
+    { file: File; title: string; description: string; preview: string }[]
   >([]);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-
   // Handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -16,6 +15,7 @@ const MultipleFileUpload = () => {
       file,
       title: "",
       description: "",
+      preview: URL.createObjectURL(file),
     }));
 
     // Preserve existing files when adding new ones
@@ -87,13 +87,13 @@ const MultipleFileUpload = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto ">
+    <div className="max-w-3xl mx-auto ">
       {/* File input */}
-     
+
       <div className="flex items-center justify-center w-full py-5">
         <label
           htmlFor="dropzone-file"
-          className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+          className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
         >
           <div className="flex flex-col items-center justify-center pt-5 pb-6">
             <svg
@@ -134,38 +134,47 @@ const MultipleFileUpload = () => {
       </div>
       {/* Selected files list */}
       {selectedFiles.length > 0 && (
-        <div className="mt-1 space-y-2">
+        <div className="my-5 space-y-9">
           {selectedFiles.map((fileData, index) => (
-            <div
-              key={index}
-              className="bg-white p-8 rounded-md shadow-md space-y-5"
-            >
-              <p className="text-sm font-medium">
-                📂 {fileData.file.name} (
-                {(fileData.file.size / 1024).toFixed(2)} KB)
-              </p>
+            <div key={index} className="flex border rounded-lg shadow-lg">
+              {/* Preview Section */}
+              {fileData.preview && (
+                <div className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3   bg-gray-100 shadow-lg order-2 md:order-1 flex flex-col">
+                  <img
+                    src={fileData.preview}
+                    alt="Uploaded Preview"
+                    className="hero-bg hero-bg-scroll h-full bg-cover bg-center rounded-lg rounded-l-none"
+                  />
+                </div>
+              )}
+              <div className="flex-shrink-0 w-full md:w-1/2 lg:w-2/3 order-1 md:order-2 space-y-5 p-5">
+                <p className="text-sm font-medium">
+                  📂 {fileData.file.name} (
+                  {(fileData.file.size / 1024).toFixed(2)} KB)
+                </p>
 
-              {/* Title input */}
-              <input
-                type="text"
-                placeholder="العنوان"
-                value={fileData.title}
-                onChange={(e) =>
-                  handleInputChange(index, "title", e.target.value)
-                }
-                className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
-              />
+                {/* Title input */}
+                <input
+                  type="text"
+                  placeholder="العنوان"
+                  value={fileData.title}
+                  onChange={(e) =>
+                    handleInputChange(index, "title", e.target.value)
+                  }
+                  className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
+                />
 
-              {/* Description input */}
-              <textarea
-                placeholder="الوصف"
-                value={fileData.description}
-                onChange={(e) =>
-                  handleInputChange(index, "description", e.target.value)
-                }
-                className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
-                rows={2}
-              />
+                {/* Description input */}
+                <textarea
+                  placeholder="الوصف"
+                  value={fileData.description}
+                  onChange={(e) =>
+                    handleInputChange(index, "description", e.target.value)
+                  }
+                  className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
+                  rows={2}
+                />
+              </div>
             </div>
           ))}
         </div>
