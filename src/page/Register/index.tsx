@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import authService from "../../services/auth.service";
 import { SetTokenInSessionStorage } from "../../utils/sessionStorage";
-import withAuth from "../../HOC/withAuth";
+import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../../component/LoadingSpinner";
 
 const Register = () => {
+  const { isAuthenticated, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [data, setData] = useState({
     username: "",
     email: "",
@@ -27,6 +32,17 @@ const Register = () => {
       })
       .catch((err) => console.log(err));
   };
+  useEffect(() => {
+    if (isAuthenticated) return navigate("/");
+  }, [isAuthenticated, navigate]);
+
+  if (loading)
+    return (
+      <div className="h-screen flex justify-center items-center text-9xl">
+        {" "}
+        <LoadingSpinner />
+      </div>
+    );
   return (
     <div id="main-wrapper" className="oxyy-register-register">
       <div className="container-fluid px-0">
@@ -168,5 +184,4 @@ const Register = () => {
   );
 };
 
-const AuthenticatedComponent = withAuth(Register);
-export default AuthenticatedComponent;
+export default Register;

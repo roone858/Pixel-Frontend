@@ -5,7 +5,6 @@ import Register from "./page/Register";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Search from "./page/Search";
-import ImageGrid from "./component/ImageGrid";
 import { useEffect, useState } from "react";
 import Plans from "./page/Plans";
 import PlanDetails from "./page/PlanDetails";
@@ -18,8 +17,6 @@ function App() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        // const response = await fetch("http://localhost:3000/resource");
-        // const data = await response.json();
         const response = await axios.get("http://localhost:3000/resource");
         setImages(response.data);
       } catch (error) {
@@ -39,8 +36,7 @@ function App() {
               element={
                 <div className="h-screen flex flex-col">
                   <Navbar />
-                  <Home />
-                  <ImageGrid images={images} />
+                  <Home images={images} />
                 </div>
               }
             />

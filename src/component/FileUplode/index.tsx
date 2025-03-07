@@ -1,12 +1,29 @@
 import { useState } from "react";
 import axios from "../../utils/axios";
+import TagInputForm from "../TagInputForm";
 
 const MultipleFileUpload = () => {
   const [selectedFiles, setSelectedFiles] = useState<
-    { file: File; title: string; description: string; preview: string }[]
+    {
+      file: File;
+      title: string;
+      description: string;
+      preview: string;
+      tags: string[];
+    }[]
   >([]);
+
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
+
+  const handleTagChange = (index: number, newTags: string[]) => {
+    setSelectedFiles((prevFiles) =>
+      prevFiles.map((fileData, i) =>
+        i === index ? { ...fileData, tags: newTags } : fileData
+      )
+    );
+  };
+
   // Handle file selection
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
@@ -16,6 +33,7 @@ const MultipleFileUpload = () => {
       title: "",
       description: "",
       preview: URL.createObjectURL(file),
+      tags: [],
     }));
 
     // Preserve existing files when adding new ones
@@ -41,9 +59,9 @@ const MultipleFileUpload = () => {
       alert("Please select files first!");
       return;
     }
-
+    console.log(selectedFiles);
     const formData = new FormData();
-    selectedFiles.forEach(({ file, title, description }) => {
+    selectedFiles.forEach(({ file, title, description, tags }) => {
       if (!title.trim() || !description.trim()) {
         alert("Title and description are required for each file.");
         return;
@@ -52,6 +70,7 @@ const MultipleFileUpload = () => {
       formData.append("files", file);
       formData.append("titles", title);
       formData.append("descriptions", description);
+      formData.append("tags", JSON.stringify(tags));
     });
 
     try {
@@ -75,7 +94,7 @@ const MultipleFileUpload = () => {
         }
       );
 
-      alert("Upload successful!");
+      console.log("Upload successful!");
       console.log("Server response:", response.data);
       setSelectedFiles([]); // Clear selected files after upload
     } catch (error) {
@@ -173,6 +192,10 @@ const MultipleFileUpload = () => {
                   }
                   className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
                   rows={2}
+                />
+                <TagInputForm
+                  tags={fileData.tags}
+                  setTags={(newTags) => handleTagChange(index, newTags)}
                 />
               </div>
             </div>
