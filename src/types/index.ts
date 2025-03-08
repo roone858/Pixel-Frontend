@@ -37,3 +37,16 @@ export interface ImageType {
     _id: string;
   };
 }
+
+export interface UserType {
+  googleId?: string; // Optional because not all users sign in with Google
+  facebookId?: string;
+  email: string;
+  profile: {
+    name: string;
+    photo: string;
+  };
+  username: string;
+  emailConfirmed?: boolean;
+  role?: "user" | "admin";
+}

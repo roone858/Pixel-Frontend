@@ -1,35 +1,4 @@
-// import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-// import axios from "../../utils/axios";
-
-// const clientId =
-//   "267563929540-8daabl4s320r13sb9813tlgvmkdpegqv.apps.googleusercontent.com";
-
-// const GoogleLoginButton = () => {
-//   const handleSuccess = (credentialResponse: any) => {
-//      console.log(credentialResponse)
-//     console.log("Google Login Success:", credentialResponse);
-
-//     axios
-//       .post("http://localhost:3000/auth/google/redirect", {
-//         token: credentialResponse.credential,
-//       })
-//       .then((data) => console.log("Auth Response:", data));
-//   };
-
-//   const handleFailure = () => {
-//     console.error("Google Login Failed");
-//   };
-
-//   return (
-//     <GoogleOAuthProvider clientId={clientId}>
-//       <GoogleLogin onSuccess={handleSuccess} onError={handleFailure} />
-//     </GoogleOAuthProvider>
-//   );
-// };
-
-// export default GoogleLoginButton;
-
-const GoogleLoginButton = () => {
+export const GoogleLoginButton = () => {
   const handleGoogleLogin = () => {
     window.location.href = "http://localhost:3000/auth/google"; // تأكد من تعديل الرابط
   };
@@ -94,10 +63,35 @@ const GoogleLoginButton = () => {
             </g>{" "}
           </g>{" "}
         </svg>
-        <span className="mr-2">تسجيل الدخول باستخدام جوجل </span>
+        <span className="mr-2">المتابعة باستخدام جوجل </span>
       </button>
     </div>
   );
 };
 
-export default GoogleLoginButton;
+
+export const FacebookLoginButton = () => {
+  const handleFacebookLogin = () => {
+    window.location.href = "http://localhost:3000/auth/facebook";
+  };
+  return (
+    <div className="flex items-center justify-center w-full  bg-gray-100 dark:bg-gray-700">
+      <button
+        onClick={handleFacebookLogin}
+        className="flex items-center justify-center  w-full   bg-white dark:bg-gray-900  rounded-lg  px-6 py-2 text-sm font-medium text-gray-800 dark:text-white hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+      >
+        <svg
+          width="20"
+          height="20"
+          fill="currentColor"
+          className="mr-2"
+          viewBox="0 0 1792 1792"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M1343 12v264h-157q-86 0-116 36t-30 108v189h293l-39 296h-254v759h-306v-759h-255v-296h255v-218q0-186 104-288.5t277-102.5q147 0 228 12z"></path>
+        </svg>
+        <span className="mr-2">المتابعة باستخدام الفيسبوك </span>
+      </button>
+    </div>
+  );
+};

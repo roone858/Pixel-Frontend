@@ -1,9 +1,7 @@
 // import { AxiosError } from "axios";
 
 import axios from "../utils/axios";
-import {
-  clearSessionStorage,
-} from "../utils/sessionStorage";
+import { clearSessionStorage } from "../utils/sessionStorage";
 
 const authService = {
   register: async (data: unknown) => {
@@ -42,7 +40,7 @@ const authService = {
     //
     try {
       const response = await axios.get("http://localhost:3000/auth/profile");
-
+      console.log(response.data);
       return response.data;
     } catch (error) {
       // const axiosError = error as AxiosError;
@@ -77,7 +75,6 @@ const authService = {
     }
   },
   verifyToken: async () => {
- 
     const res = await axios.get("http://localhost:3000/auth/verify-token");
     return res;
   },

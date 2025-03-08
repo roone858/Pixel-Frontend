@@ -18,7 +18,7 @@ const AvatarWithDropdown = () => {
           <div className="flex justify-center items-center space-x-3 cursor-pointer">
             <img
               className="inline-block h-10 w-10 rounded-full ring-2 ring-white ml-3"
-              src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+              src={user?.profile?.photo}
               alt=""
             />
             {/* <div className="w-12 h-12 rounded-full overflow-hidden border-2 dark:border-white border-orange-500 ml-2">
