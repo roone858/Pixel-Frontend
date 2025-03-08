@@ -50,7 +50,7 @@ const Register = () => {
         <div className="flex min-h-screen">
         
           {/* Login Form */}
-          <div className="flex-shrin  k-0 w-full md:w-1/2 lg:w-1/3 bg-gray-100 shadow-lg order-2 md:order-1 flex flex-col  ">
+          <div className="flex-shrink  k-0 w-full md:w-1/2 lg:w-1/3 bg-gray-100 shadow-lg order-2 md:order-1 flex flex-col  ">
             <div className="p-8  my-auto py-5">
               <div className="mx-auto text-center">
                 <div className="mb-6">

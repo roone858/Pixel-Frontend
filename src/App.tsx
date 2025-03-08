@@ -1,6 +1,6 @@
 import Navbar from "./component/Navbar";
 import Login from "./page/Login";
-import Home from "./page/Home";
+import HeroSection from "./page/Home";
 import Register from "./page/Register";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
@@ -13,6 +13,8 @@ import FileUpload from "./component/FileUplode";
 import AuthCallback from "./component/AuthCallback";
 import axios from "./utils/axios";
 import { ImageType } from "./types";
+import Footer from "./component/Footer";
+import GallerySlider from "./component/slider";
 
 function App() {
   const [images, setImages] = useState<ImageType[]>([]);
@@ -37,9 +39,11 @@ function App() {
             <Route
               path="/"
               element={
-                <div className="h-screen flex flex-col">
+                <div className=" flex flex-col">
                   <Navbar />
-                  <Home images={images} />
+                  <HeroSection  />
+                  <Gallery images={images} />
+                  <Footer />
                 </div>
               }
             />

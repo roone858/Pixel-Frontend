@@ -3,9 +3,8 @@ import imageOne from "../../assets/_23-2151120057.avif";
 import imageTow from "../../assets/_52683-148822.avif";
 import imageThree from "../../assets/_52683-90115.avif";
 import imageFour from "../../assets/_52683-92622.avif";
-import GallerySlider from "../../component/slider";
-import { ImageType } from "../../types";
-const Home = ({ images }: { images: ImageType[] }) => {
+// import { ImageType } from "../../types";
+const HeroSection = () => {
   const [searchValue, setSearchValue] = useState("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -104,9 +103,8 @@ const Home = ({ images }: { images: ImageType[] }) => {
           </div>
         </div>
       </div>
-      <GallerySlider images={images} />
     </div>
   );
 };
 
-export default Home;
+export default HeroSection;
