@@ -12,13 +12,16 @@ import Gallery from "./component/Gallery";
 import FileUpload from "./component/FileUplode";
 import AuthCallback from "./component/AuthCallback";
 import axios from "./utils/axios";
+import { ImageType } from "./types";
+
 function App() {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<ImageType[]>([]);
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
         const response = await axios.get("http://localhost:3000/resource");
+        console.log(response.data);
         setImages(response.data);
       } catch (error) {
         console.error("Error fetching images:", error);

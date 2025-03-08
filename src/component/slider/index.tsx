@@ -3,15 +3,10 @@ import Swiper from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-
-interface Image {
-  fileName: string;
-  title: string;
-  description: string;
-}
+import { ImageType } from "../../types";
 
 interface GallerySliderProps {
-  images: Image[];
+  images: ImageType[];
 }
 
 const GallerySlider: React.FC<GallerySliderProps> = ({ images }) => {

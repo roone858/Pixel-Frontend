@@ -17,3 +17,23 @@ export interface User {
   confirmed?: boolean;
   role?: "user" | "admin";
 }
+
+export interface ImageType {
+  _id: string;
+  title: string;
+  description: string;
+  tags: string[];
+  fileName: string;
+  metadata: {
+    size: string;
+    resolution: string;
+    format: string;
+    _id: string;
+  };
+  uploader: string;
+  downloadStatistics: {
+    downloadCount: number;
+    likes: number;
+    _id: string;
+  };
+}

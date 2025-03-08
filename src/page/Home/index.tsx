@@ -4,7 +4,8 @@ import imageTow from "../../assets/_52683-148822.avif";
 import imageThree from "../../assets/_52683-90115.avif";
 import imageFour from "../../assets/_52683-92622.avif";
 import GallerySlider from "../../component/slider";
-const Home = ({ images }: { images: [] }) => {
+import { ImageType } from "../../types";
+const Home = ({ images }: { images: ImageType[] }) => {
   const [searchValue, setSearchValue] = useState("");
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
