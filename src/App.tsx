@@ -1,6 +1,6 @@
 import Navbar from "./component/Navbar";
 import Login from "./page/Login";
-import HeroSection from "./page/Home";
+import HeroSection from "./page/HeroSection";
 import Register from "./page/Register";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
@@ -14,7 +14,7 @@ import AuthCallback from "./component/AuthCallback";
 import axios from "./utils/axios";
 import { ImageType } from "./types";
 import Footer from "./component/Footer";
-import GallerySlider from "./component/slider";
+import Settings from "./page/ProfileSetting";
 
 function App() {
   const [images, setImages] = useState<ImageType[]>([]);
@@ -51,6 +51,7 @@ function App() {
             <Route path="/gallery" element={<Gallery images={images} />} />
             <Route path="/upload" element={<FileUpload />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/setting" element={<Settings  />} />
             <Route path="/plans" element={<Plans />}></Route>
             <Route path="/plans/:id" element={<PlanDetails />} />
 
