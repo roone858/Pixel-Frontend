@@ -1,7 +1,9 @@
 // import { AxiosError } from "axios";
 
 import axios from "../utils/axios";
-import { clearSessionStorage } from "../utils/sessionStorage";
+import {
+  clearSessionStorage,
+} from "../utils/sessionStorage";
 
 const authService = {
   register: async (data: unknown) => {
@@ -75,6 +77,7 @@ const authService = {
     }
   },
   verifyToken: async () => {
+ 
     const res = await axios.get("http://localhost:3000/auth/verify-token");
     return res;
   },

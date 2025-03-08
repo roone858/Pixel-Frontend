@@ -8,6 +8,7 @@ import {
 } from "react";
 import { getTokenInSessionStorage } from "../../utils/sessionStorage";
 import authService from "../../services/auth.service";
+import { setTokenInAxios } from "../../utils/axios";
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -31,6 +32,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [loading, setLoading] = useState(true); // New loading state
 
   useEffect(() => {
+    setTokenInAxios();
     if (getTokenInSessionStorage()) {
       authService
         .verifyToken()

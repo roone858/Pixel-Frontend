@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 import Plans from "./page/Plans";
 import PlanDetails from "./page/PlanDetails";
 import Gallery from "./component/Gallery";
-import axios from "./utils/axios";
 import FileUpload from "./component/FileUplode";
+import AuthCallback from "./component/AuthCallback";
+import axios from "./utils/axios";
 function App() {
   const [images, setImages] = useState([]);
 
@@ -40,6 +41,7 @@ function App() {
                 </div>
               }
             />
+            <Route path="/auth/callback" element={<AuthCallback />} />
             <Route path="/gallery" element={<Gallery images={images} />} />
             <Route path="/upload" element={<FileUpload />} />
             <Route path="/register" element={<Register />} />

@@ -3,6 +3,7 @@ import authService from "../../services/auth.service";
 import { SetTokenInSessionStorage } from "../../utils/sessionStorage";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import GoogleLoginButton from "../../component/GoogleLogin";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -38,6 +39,7 @@ const Login = () => {
           {/* Login Form */}
           <div className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 bg-gray-100 shadow-lg order-2 md:order-1 flex flex-col  ">
             <div className="p-8  my-auto py-5">
+           
               <div className="mx-auto text-center">
                 <div className="mb-8">
                   <a
@@ -53,6 +55,10 @@ const Login = () => {
                     </svg>
                     <span>بيكسل</span>
                   </a>
+                </div>
+                <div className="my-2">
+
+                <GoogleLoginButton/> 
                 </div>
                 <form
                   id="loginForm"
@@ -111,6 +117,8 @@ const Login = () => {
                 . All Rights Reserved.
               </p>
             </div>
+        
+            
           </div>
           {/* Login Form End */}
           {/* Welcome Text */}
