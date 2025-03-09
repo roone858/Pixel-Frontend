@@ -1,44 +1,32 @@
-
-const plans = [
-  {
-    name: "اساسى",
-    price: "$50",
-    period: "/شهر",
-    description: "You just want to discover",
-    features: ["10 Credits", "Generate video (2 credits)", "Quizz (1 credit)"],
-    buttonText: "اشترك الان",
-    buttonLink: "plans/price_1QxpH9DLQcvajEnuI0XqHpeL",
-    isPopular: false,
-  },
-  {
-    name: "محترف",
-    price: "$400",
-    period: "/شهر",
-    description: "You just want to discover",
-    features: ["10 Credits", "Generate video (2 credits)", "Quizz (1 credit)"],
-    buttonText: "اشترك الان",
-    buttonLink: "plans/price_1QxpHuDLQcvajEnuPw7RaKn9",
-    isPopular: false,
-  },
-  {
-    name: "مميز",
-    price: "$600",
-    period: "/شهر",
-    description: "You want to learn and have a personal assistant",
-    features: [
-      "30 Credits",
-      "Powered by GPT-4 (more accurate)",
-      "Generate video (2 credits)",
-      "Quizz (1 credit)",
-      "Analytics on the quizz",
-    ],
-    buttonText: "اشترك الان",
-    buttonLink: "plans/price_1QxpIgDLQcvajEnuNmtclWgQ",
-    isPopular: true,
-  },
-];
+import { useEffect, useState } from "react";
+import plansService from "../../services/plans.service";
+import { Link } from "react-router-dom";
 
 const Pricing = () => {
+  const [plans, setPlans] = useState<
+    {
+      _id: "67cd8b0b1cedb4d74666c514";
+
+      name: "اساسى";
+      priceId: "price_1QxpH9DLQcvajEnuI0XqHpeL";
+      price: "$50";
+      period: 3;
+      description: "You just want to discover";
+      features: [
+        "10 Credits",
+        "Generate video (2 credits)",
+        "Quizz (1 credit)"
+      ];
+      isPopular: false;
+      __v: 0;
+    }[]
+  >([]);
+  useEffect(() => {
+    (async () => {
+      const response = await plansService.getAll();
+      setPlans(response);
+    })();
+  }, []);
   return (
     <div>
       <div>
@@ -50,7 +38,7 @@ const Pricing = () => {
         </p>
       </div>
       <div className="mt-24 px-10 pb-10 container gap-5 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8">
-        {plans.map((plan, index) => (
+        {plans?.map((plan, index) => (
           <div
             key={index}
             className="relative p-8 border border-gray-200 rounded-2xl shadow-sm flex flex-col"
@@ -66,8 +54,11 @@ const Pricing = () => {
                 <span className="text-5xl font-extrabold tracking-tight">
                   {plan.price}
                 </span>
+                <span className="text-5xl font-extrabold tracking-tight">
+                  /
+                </span>
                 <span className="ml-1 text-xl font-semibold">
-                  {plan.period}
+                  {plan.period} أشهر
                 </span>
               </p>
               <p className="mt-6">{plan.description}</p>
@@ -94,16 +85,16 @@ const Pricing = () => {
                 ))}
               </ul>
             </div>
-            <a
+            <Link
               className={`mt-8 block w-full py-3 px-6 border border-transparent rounded-md text-center font-medium ${
                 plan.isPopular
-                  ?  "bg-orange-500 hover:bg-orange-600 text-white"
+                  ? "bg-orange-500 hover:bg-orange-600 text-white"
                   : "bg-orange-50 text-orange-600 hover:bg-orange-100"
               }`}
-              href={plan.buttonLink}
+              to={plan._id}
             >
-              {plan.buttonText}
-            </a>
+              اشترك الان
+            </Link>
           </div>
         ))}
       </div>

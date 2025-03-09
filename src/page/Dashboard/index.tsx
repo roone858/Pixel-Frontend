@@ -2,31 +2,47 @@ import { useEffect, useState } from "react";
 import { FaUsers, FaCreditCard, FaImage, FaBars } from "react-icons/fa";
 import withAdminAuth from "../../HOC/withAdminAuth";
 import axios from "../../utils/axios";
-import { UserType } from "../../types";
+import { ImageType, User, UserType } from "../../types";
 
-const Dashboard = () => {
+const Dashboard = ({ images }: { images: ImageType[] }) => {
   const [activeTab, setActiveTab] = useState("users");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [users, setUsers] = useState<UserType[]>([]);
   const [subscriptions, setSubscriptions] = useState<any[]>([]);
-
-  const stats = [
-    { title: "إجمالي المستخدمين", value: "٢٬٣٤٥", icon: <FaUsers /> },
-    { title: "الاشتراكات", value: "١٬٢٣٤", icon: <FaCreditCard /> },
+  const [stats, setStats] = useState([
+    { title: "إجمالي المستخدمين", value: users.length, icon: <FaUsers /> },
+    {
+      title: "الاشتراكات",
+      value: subscriptions.length,
+      icon: <FaCreditCard />,
+    },
     { title: "إجمالي الصور", value: "٩٬٨٧٦", icon: <FaImage /> },
-  ];
+  ]);
+
   useEffect(() => {
     // must all api have admin guard
     (async () => {
       const res = await axios.get("http://localhost:3000/users");
       const subRes = await axios.get("http://localhost:3000/subscription");
       setUsers(res.data);
+      console.log(res.data);
+      console.log(images);
+      setStats(() => [
+        {
+          title: "إجمالي المستخدمين",
+          value: res.data.length,
+          icon: <FaUsers />,
+        },
+        {
+          title: "الاشتراكات",
+          value: subRes.data.length,
+          icon: <FaCreditCard />,
+        },
+        { title: "إجمالي الصور", value: "٩٬٨٧٦", icon: <FaImage /> },
+      ]);
+
       setSubscriptions(subRes.data);
     })();
-
-    // if (true)     get all user from  api   and save in the state
-    //               get all subscription from api
-    //               get all resources from api
   }, []);
 
   return (
@@ -137,19 +153,31 @@ const Dashboard = () => {
             <table className="w-full">
               <thead>
                 <tr className="text-right border-b">
-                  <th className="pb-2">User ID</th>
-                  <th className="pb-2">Plan ID</th>
+                  <th className="pb-2">المستخدم</th>
+                  <th className="pb-2">الاميل</th>
+                  <th className="pb-2">الخطة</th>
                   <th className="pb-2">تاريخ الانشاء</th>
-                  <th className="pb-2">Status</th>
+                  <th className="pb-2">الحالة</th>
                 </tr>
               </thead>
               <tbody>
                 {subscriptions?.map((sub: any) => (
                   <tr className="border-b">
-                    <td className="py-3">{sub.userId}</td>
-                    <td>{sub.planId}</td>
+                    <td className="py-3">{sub.user.name || "غير معرف"}</td>
+                    <td className="py-3">{sub.user.email || "غير معرف"}</td>
+                    <td>{sub.planName}</td>
                     <td> {new Date(sub.createdAt).toLocaleDateString()}</td>
-                    <td> {sub.status}</td>
+                    <td>
+                      <span
+                        className={
+                          sub.status == "active"
+                            ? "border text-sm font-medium  bg-green-500 border-none rounded-full px-2 py-z "
+                            : "border text-sm font-medium  bg-gray-200 border-none rounded-full px-2 py-z "
+                        }
+                      >
+                        {sub.status}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -160,6 +188,58 @@ const Dashboard = () => {
         {activeTab === "photos" && (
           <div className="bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-bold mb-4">إدارة الصور</h2>
+            <table className="w-full">
+              <thead>
+                <tr className="text-right border-b">
+                  <th className="pb-2">العنوان</th>
+                  <th className="pb-2">الوصف </th>
+                  <th className="pb-2">المنشئ</th>
+                </tr>
+              </thead>
+              <tbody>
+                {images?.map((image: ImageType) => (
+                  <tr className="border-b">
+                    <td className="py-3">
+                      <div className="flex flex-row-reverse justify-end items-center">
+                        <span>{image.title}</span>
+                        <img
+                          src={
+                            "http://localhost:3000/resource/" + image.fileName
+                          }
+                          alt="Profile"
+                          className="w-24  rounded-md border-2 ml-3 border-gray-300 dark:border-gray-600"
+                        />
+                      </div>
+                    </td>
+
+                    <td>{image.description}</td>
+                    <td>
+                      {users?.find(
+                        (user: UserType) =>
+                          String(user._id) === String(image.uploader)
+                      )?.profile?.name || "Unknown"}
+                    </td>
+                    <td className="flex space-x-2 py-2">
+                      {/* زر التعديل */}
+                      <button
+                        // onClick={() => handleEdit(image)}
+                        className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+                      >
+                        تعديل
+                      </button>
+
+                      {/* زر الحذف */}
+                      <button
+                        // onClick={() => handleDelete(image._id)}
+                        className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600"
+                      >
+                        حذف
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import authService from "../../services/auth.service";
 import { AuthContext } from "../../context/AuthContext";
+import { Link } from "react-router-dom";
 
 const AvatarWithDropdown = () => {
   const [open, setOpen] = useState(false);
@@ -56,12 +57,12 @@ const AvatarWithDropdown = () => {
                         ></path>
                       </svg>
                     </div>
-                    Account
+                    الاعدادات
                   </a>
                 </li>
                 <li className="font-medium">
-                  <a
-                    href="#"
+                  <Link
+                    to="dashboard"
                     className="flex items-center transform transition-colors duration-200 border-l-4 border-transparent hover:border-indigo-700"
                   >
                     <div className="ml-3">
@@ -86,8 +87,8 @@ const AvatarWithDropdown = () => {
                         ></path>
                       </svg>
                     </div>
-                    Setting
-                  </a>
+                    لوحة التحكم
+                  </Link>
                 </li>
                 <hr className="dark:border-gray-700" />
                 <li className="" onClick={() => authService.logout()}>

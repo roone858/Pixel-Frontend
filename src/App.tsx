@@ -52,7 +52,7 @@ function App() {
             <Route path="/gallery" element={<Gallery images={images} />} />
             <Route path="/upload" element={<FileUpload />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard images={images} />} />
             <Route path="/setting" element={<Settings  />} />
             <Route path="/plans" element={<Plans />}></Route>
             <Route path="/plans/:id" element={<PlanDetails />} />
