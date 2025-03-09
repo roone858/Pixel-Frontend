@@ -5,6 +5,7 @@ import { clearSessionStorage } from "../utils/sessionStorage";
 
 const authService = {
   register: async (data: unknown) => {
+    console.log(data);
     try {
       const response = await axios.post(
         "http://localhost:3000/auth/signup",
@@ -14,7 +15,7 @@ const authService = {
       return response.data;
     } catch (error) {
       // const axiosError = error as AxiosError;
-      console.log(axios);
+      console.log(error);
       // return thunkAPI.rejectWithValue(axiosError?.response?.data);
     }
   },
@@ -40,7 +41,6 @@ const authService = {
     //
     try {
       const response = await axios.get("http://localhost:3000/auth/profile");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       // const axiosError = error as AxiosError;

@@ -6,7 +6,6 @@ const Gallery = ({ images }: { images: ImageDetails[] }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const authToken = `${sessionStorage.getItem("access_token") || ""}`;
-  console.log(images);
 
   const openLightbox = (imageSrc: string) => {
     setSelectedImage(imageSrc);
@@ -36,6 +35,7 @@ const Gallery = ({ images }: { images: ImageDetails[] }) => {
               className="h-[277px] w-full rounded-3xl overflow-hidden"
             >
               <img
+                loading="lazy"
                 src={`http://localhost:3000/resource/${image.fileName}?token=${authToken}`}
                 alt="Gallery image"
                 className="gallery-image object-cover rounded-3xl hover:grayscale transition-all duration-700 ease-in-out w-full h-full cursor-pointer"

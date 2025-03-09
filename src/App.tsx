@@ -15,6 +15,7 @@ import axios from "./utils/axios";
 import { ImageType } from "./types";
 import Footer from "./component/Footer";
 import Settings from "./page/ProfileSetting";
+import Dashboard from "./page/Dashboard";
 
 function App() {
   const [images, setImages] = useState<ImageType[]>([]);
@@ -51,6 +52,7 @@ function App() {
             <Route path="/gallery" element={<Gallery images={images} />} />
             <Route path="/upload" element={<FileUpload />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/setting" element={<Settings  />} />
             <Route path="/plans" element={<Plans />}></Route>
             <Route path="/plans/:id" element={<PlanDetails />} />
