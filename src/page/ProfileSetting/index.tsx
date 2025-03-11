@@ -2,24 +2,61 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import withAuth from "../../HOC/withAuth";
 import Modal from "../../component/Alert";
+import { getTokenInSessionStorage } from "../../utils/sessionStorage";
+import { UserType } from "../../types";
+import usersService from "../../services/users.service";
 
 const Settings = () => {
   const [darkMode, setDarkMode] = useState(false);
   const { user } = useContext(AuthContext);
   const [notifications, setNotifications] = useState(true);
+  const [updatedUser, setUpdatedUser] = useState(user);
   const [profileImage, setProfileImage] = useState(user.profile.photo);
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setProfileImage(imageUrl);
+      setProfileImageFile(file);
+      // setUpdatedUser((prevUser: UserType) => ({
+      //   ...prevUser,
+      //   profile: { name: prevUser.profile.name, photo: file.name },
+      // }));
     }
   };
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
 
+    setUpdatedUser((prevUser: UserType) => {
+      // Check if the field is inside the `profile` object
+      if (name in prevUser.profile) {
+        return {
+          ...prevUser,
+          profile: {
+            ...prevUser.profile,
+            [name]: value, // Update the specific field in `profile`
+          },
+        };
+      } else {
+        return {
+          ...prevUser,
+          [name]: value, // Update the field outside `profile`
+        };
+      }
+    });
+  };
+  const handleSubmit = async () => {
+    await usersService.update(updatedUser, profileImageFile);
+  };
   useEffect(() => {
-    setProfileImage(user.profile.photo);
-  }, [user.profile.photo]);
+    setUpdatedUser(user);
+    setProfileImage(
+        "http://localhost:3000/users/profile-picture?token=" +
+          getTokenInSessionStorage()
+    );
+  }, [user]);
   return (
     <div
       className={`min-h-screen ${
@@ -56,7 +93,9 @@ const Settings = () => {
               </label>
               <input
                 type="text"
+                name="name"
                 className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
+                onChange={handleInputChange}
                 placeholder="أدخل اسمك"
                 defaultValue={user.profile.name}
               />
@@ -67,7 +106,9 @@ const Settings = () => {
               </label>
               <input
                 type="text"
+                name="username"
                 className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
+                onChange={handleInputChange}
                 placeholder=" اسم المستخدم"
                 defaultValue={user.username}
               />
@@ -78,12 +119,16 @@ const Settings = () => {
               </label>
               <input
                 type="email"
+                onChange={handleInputChange}
                 defaultValue={user.email}
                 className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
                 placeholder="أدخل بريدك الإلكتروني"
               />
             </div>
-            <button className="bg-orange-500 text-white py-4 px-8 rounded-md">
+            <button
+              onClick={handleSubmit}
+              className="bg-orange-500 text-white py-4 px-8 rounded-md"
+            >
               حفظ التغييرات
             </button>
           </div>

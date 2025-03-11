@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import authService from "../../services/auth.service";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";
+import { getTokenInSessionStorage } from "../../utils/sessionStorage";
 
 const AvatarWithDropdown = () => {
   const [open, setOpen] = useState(false);
@@ -19,7 +20,10 @@ const AvatarWithDropdown = () => {
           <div className="flex justify-center items-center space-x-3 cursor-pointer">
             <img
               className="inline-block h-10 w-10 rounded-full ring-2 ring-white ml-3"
-              src={user?.profile?.photo}
+              src={
+                "http://localhost:3000/users/profile-picture?token=" +
+                getTokenInSessionStorage()
+              }
               alt=""
             />
             {/* <div className="w-12 h-12 rounded-full overflow-hidden border-2 dark:border-white border-orange-500 ml-2">
@@ -37,8 +41,8 @@ const AvatarWithDropdown = () => {
             <div className="absolute w-52 px-5 py-3 text-sm dark:bg-gray-800 bg-white rounded-lg shadow border dark:border-transparent mt-5">
               <ul className="space-y-3 ">
                 <li className="font-medium">
-                  <a
-                    href="#"
+                  <Link
+                    to="setting"
                     className="flex items-center transform transition-colors duration-200 border-l-4 border-transparent hover:border-indigo-700"
                   >
                     <div className="ml-3">
@@ -58,7 +62,7 @@ const AvatarWithDropdown = () => {
                       </svg>
                     </div>
                     الاعدادات
-                  </a>
+                  </Link>
                 </li>
                 <li className="font-medium">
                   <Link

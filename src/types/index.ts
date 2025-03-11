@@ -51,3 +51,23 @@ export interface UserType {
   emailConfirmed?: boolean;
   role?: "user" | "admin";
 }
+export interface SubscriptionType {
+  description: string;
+  user: { name: string; email: string };
+  name: string;
+  planName: string;
+  createdAt: string;
+  status: string;
+  _id: string;
+  period: number;
+  features: string[];
+}
+
+export interface PlanType {
+  description: string;
+  name: string;
+  price: number;
+  _id: string;
+  period: number;
+  features: string[];
+}

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "../../utils/axios";
 import TagInputForm from "../TagInputForm";
+import imagesService from "../../services/images.service";
 
 const MultipleFileUpload = () => {
   const [selectedFiles, setSelectedFiles] = useState<
@@ -77,25 +77,10 @@ const MultipleFileUpload = () => {
       setUploading(true);
       setUploadProgress(0);
 
-      const response = await axios.post(
-        "http://localhost:3000/resource/upload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          onUploadProgress: (progressEvent) => {
-            if (progressEvent.total) {
-              setUploadProgress(
-                Math.round((progressEvent.loaded * 100) / progressEvent.total)
-              );
-            }
-          },
-        }
-      );
+      const response = await imagesService.upload(formData, setUploadProgress);
 
-      console.log("Upload successful!");
-      console.log("Server response:", response.data);
+      console.log("Upload successful!)");
+      console.log("Server response:", response);
       setSelectedFiles([]); // Clear selected files after upload
     } catch (error) {
       console.error("Upload failed", error);

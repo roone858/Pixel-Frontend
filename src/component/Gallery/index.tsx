@@ -1,8 +1,9 @@
-import { useState } from "react";
-interface ImageDetails {
-  fileName: string;
-}
-const Gallery = ({ images }: { images: ImageDetails[] }) => {
+import { useContext, useState } from "react";
+import { StoreContext } from "../../context/AuthContext copy";
+import LoadingSpinner from "../LoadingSpinner";
+
+const Gallery = () => {
+  const { images, isLoading } = useContext(StoreContext);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState("");
   const authToken = `${sessionStorage.getItem("access_token") || ""}`;
@@ -16,7 +17,7 @@ const Gallery = ({ images }: { images: ImageDetails[] }) => {
     setLightboxOpen(false);
     setSelectedImage("");
   };
-
+  isLoading && <LoadingSpinner />;
   return (
     <section className="py-24 bg-white dark:bg-gray-800 min-h-screen">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

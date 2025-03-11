@@ -1,12 +1,12 @@
 // import { AxiosError } from "axios";
 
-import { PlanType } from "../types";
+import { ImageType } from "../types";
 import axios from "../utils/axios";
 
-const plansService = {
+const imagesService = {
   create: async (data: unknown) => {
     try {
-      const response = await axios.post("http://localhost:3000/plans", data);
+      const response = await axios.post("http://localhost:3000/resurces", data);
 
       return response.data;
     } catch (error) {
@@ -15,22 +15,21 @@ const plansService = {
       // return thunkAPI.rejectWithValue(axiosError?.response?.data);
     }
   },
-  getAll: async () => {
+  getAll: async (): Promise<ImageType[]> => {
     try {
-      const response = await axios.get("http://localhost:3000/plans");
+      const response = await axios.get("http://localhost:3000/resource");
 
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(axios);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error(axios);
+      return [];
     }
   },
-  update: async (data: PlanType | null) => {
+  update: async (data: ImageType | null) => {
     try {
       if (!data) return new Error("data is null");
       const response = await axios.patch(
-        "http://localhost:3000/plans/" + data._id,
+        "http://localhost:3000/resource/" + data._id,
         data
       );
 
@@ -42,10 +41,28 @@ const plansService = {
     }
   },
 
-  getProfile: async () => {
+  upload: async (
+    formData: FormData,
+    setUploadProgress: (number: number) => void
+  ) => {
     //
     try {
-      const response = await axios.get("http://localhost:3000/plans/profile");
+      const response = await axios.post(
+        "http://localhost:3000/resource/upload",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          onUploadProgress: (progressEvent) => {
+            if (progressEvent.total) {
+              setUploadProgress(
+                Math.round((progressEvent.loaded * 100) / progressEvent.total)
+              );
+            }
+          },
+        }
+      );
       return response.data;
     } catch (error) {
       // const axiosError = error as AxiosError;
@@ -56,7 +73,7 @@ const plansService = {
   checkUsernameExists: async (newUsername: string) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/plans/check-username",
+        "http://localhost:3000/images/check-username",
         {
           username: newUsername,
         }
@@ -69,7 +86,7 @@ const plansService = {
   checkEmailExists: async (email: string) => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/plans/check-email",
+        "http://localhost:3000/images/check-email",
         {
           email: email,
         }
@@ -80,8 +97,8 @@ const plansService = {
     }
   },
   verifyToken: async () => {
-    const res = await axios.get("http://localhost:3000/plans/verify-token");
+    const res = await axios.get("http://localhost:3000/images/verify-token");
     return res;
   },
 };
-export default plansService;
+export default imagesService;
