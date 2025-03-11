@@ -15,20 +15,9 @@ import Settings from "./page/ProfileSetting";
 import Dashboard from "./page/Dashboard";
 import Sidebar from "./component/Profile";
 import { StoreProvider } from "./context/AuthContext copy";
+import PlanDetailsPage from "./page/PlanDetailsPage";
 
 function App() {
-  // useEffect(() => {
-  //   const fetchImages = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:3000/resource");
-  //       setImages(response.data);
-  //     } catch (error) {
-  //       console.error("Error fetching images:", error);
-  //     }
-  //   };
-
-  //   fetchImages();
-  // }, []);
   return (
     <AuthProvider>
       <StoreProvider>
@@ -49,6 +38,7 @@ function App() {
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/upload" element={<FileUpload />} />
+              <Route path="/my-plan" element={<PlanDetailsPage />} />
               <Route path="/register" element={<Register />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/setting" element={<Settings />} />

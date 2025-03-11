@@ -56,6 +56,7 @@ export interface SubscriptionType {
   user: { name: string; email: string };
   name: string;
   planName: string;
+  planId: string;
   createdAt: string;
   status: string;
   _id: string;
@@ -67,6 +68,7 @@ export interface PlanType {
   description: string;
   name: string;
   price: number;
+  priceId: string;
   _id: string;
   period: number;
   features: string[];

@@ -22,7 +22,7 @@ const withAdminAuth = <P extends object>(
     ) as AuthContextType;
 
     useEffect(() => {
-      if (!loading && !isAuthenticated) navigate("/"); // Redirect if not an admin
+      if (!loading && user?.role !== "admin") navigate("/"); // Redirect if not an admin
     }, [user, navigate, loading, isAuthenticated]);
 
     return user?.role === "admin" ? <WrappedComponent {...props} /> : null;

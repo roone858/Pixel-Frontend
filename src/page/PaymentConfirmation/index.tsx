@@ -1,4 +1,5 @@
-const SubscriptionPaymentSuccess = ({ subscriptionPlan }) => {
+
+const SubscriptionPaymentSuccess = ({ planId }: { planId: string }) => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
       <div className="w-full max-w-2xl p-12 mx-4 text-center transition-all transform bg-white shadow-lg rounded-xl hover:shadow-xl">
@@ -24,7 +25,7 @@ const SubscriptionPaymentSuccess = ({ subscriptionPlan }) => {
           تم الدفع للاشتراك بنجاح!
         </h1>
         <p className="mb-8 text-xl text-gray-700">
-          شكرًا لاشتراكك في خطة {subscriptionPlan}.
+          شكرًا لاشتراكك في خطة {planId}.
         </p>
 
         <div className="p-6 mb-8 rounded-lg bg-orange-50">
@@ -49,7 +50,7 @@ const SubscriptionPaymentSuccess = ({ subscriptionPlan }) => {
         {/* Back to Dashboard Button */}
         <div className="mt-12">
           <a
-            href="/dashboard"
+            href="/"
             className="inline-block px-8 py-4 text-lg font-semibold text-white transition-colors duration-200 bg-orange-600 rounded-lg hover:bg-green-700"
           >
             الذهاب إلى الصفحة الرئيسية

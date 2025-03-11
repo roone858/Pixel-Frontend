@@ -4,12 +4,12 @@ import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import axios from "axios";
 
 interface CheckoutFormProps {
-  priceId: string;
+  planId: string;
   setShowConfirmation: (a: boolean) => void;
 }
 
 export default function CheckoutForm({
-  priceId,
+  planId,
   setShowConfirmation,
 }: CheckoutFormProps) {
   const stripe = useStripe();
@@ -54,7 +54,7 @@ export default function CheckoutForm({
         "http://localhost:3000/subscription/create-subscription",
         {
           paymentMethodId: paymentMethod.id,
-          planId: priceId,
+          planId: planId,
           email,
           name,
         }

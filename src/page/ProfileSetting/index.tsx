@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import withAuth from "../../HOC/withAuth";
 import Modal from "../../component/Alert";
-import { getTokenInSessionStorage } from "../../utils/sessionStorage";
 import { UserType } from "../../types";
 import usersService from "../../services/users.service";
+import Breadcrumb from "../../component/Breadcrumb";
 
 const Settings = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -52,10 +52,8 @@ const Settings = () => {
   };
   useEffect(() => {
     setUpdatedUser(user);
-    setProfileImage(
-        "http://localhost:3000/users/profile-picture?token=" +
-          getTokenInSessionStorage()
-    );
+    setProfileImage(user.profile.photo);
+  
   }, [user]);
   return (
     <div
@@ -63,8 +61,9 @@ const Settings = () => {
         darkMode ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-900"
       }`}
     >
+     
       <div className="max-w-4xl mx-auto py-10 px-6">
-        <h2 className="text-3xl font-semibold mb-6">الإعدادات</h2>
+      <Breadcrumb />
 
         {/* الحساب الشخصي */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md mb-6 ">

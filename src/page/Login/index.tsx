@@ -2,16 +2,25 @@ import { ChangeEvent, FormEvent, useContext, useEffect, useState } from "react";
 import authService from "../../services/auth.service";
 import { SetTokenInSessionStorage } from "../../utils/sessionStorage";
 import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-import  {GoogleLoginButton,
-  FacebookLoginButton,
-} from "../../component/OAuth";
+import { Link, useNavigate } from "react-router-dom";
+import { GoogleLoginButton, FacebookLoginButton } from "../../component/OAuth";
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
     identifier: "",
     password: "",
   });
+
+  const [errorMessage, setErrorMessage] = useState(""); // حالة لتخزين رسالة الخطأ
+
+  const { isAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setCredentials((prevCredentials) => ({
@@ -22,25 +31,29 @@ const Login = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const response = await authService.login(credentials);
-    if (response["access_token"])
-      SetTokenInSessionStorage(response["access_token"]);
-    window.location.href = "/";
-  };
-  const { isAuthenticated } = useContext(AuthContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
+
+    try {
+      const response = await authService.login(credentials);
+
+      if (response["access_token"]) {
+        SetTokenInSessionStorage(response["access_token"]);
+        window.location.href = "/";
+      } else {
+        setErrorMessage("فشل في تسجيل الدخول. يرجى التحقق من البيانات والمحاولة مرة أخرى.");
+      }
+    } catch (err) {
+      console.error("Login failed:", err);
+      setErrorMessage("فشل في تسجيل الدخول. يرجى التحقق من البيانات والمحاولة مرة أخرى.");
     }
-  }, [isAuthenticated, navigate]);
+  };
+
   return (
     <div id="main-wrapper" className="oxyy-login-register">
       <div className="container-fluid px-0">
         <div className="flex min-h-screen">
           {/* Login Form */}
-          <div className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 bg-gray-100 shadow-lg order-2 md:order-1 flex flex-col  ">
-            <div className="p-8  my-auto py-5">
+          <div className="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 bg-gray-100 shadow-lg order-2 md:order-1 flex flex-col">
+            <div className="p-8 my-auto py-5">
               <div className="mx-auto text-center">
                 <div className="mb-8">
                   <a
@@ -73,7 +86,7 @@ const Login = () => {
                     <input
                       type="text"
                       name="identifier"
-                      className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500 "
+                      className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500"
                       onChange={handleChangeInput}
                       placeholder="اسم المستخدم او البريد الالكترونى"
                     />
@@ -82,12 +95,18 @@ const Login = () => {
                     <input
                       type="password"
                       name="password"
-                      className="w-full py-2 px-3 border-0 border-b  border-gray-300 focus:outline-none focus:border-orange-500 "
+                      className="w-full py-2 px-3 border-0 border-b border-gray-300 focus:outline-none focus:border-orange-500"
                       id="loginPassword"
                       onChange={handleChangeInput}
                       placeholder="كلمة المرور"
                     />
                   </div>
+
+                  {/* عرض رسالة الخطأ */}
+                  {errorMessage && (
+                    <span className="text-red-500 text-sm block mb-4">{errorMessage}</span>
+                  )}
+
                   <a
                     className="block text-sm text-orange-500 my-4"
                     href="forgot-password-13.html"
@@ -105,13 +124,13 @@ const Login = () => {
                 </form>
                 <p className="text-sm mt-8">
                   جديد فى بيكسل ؟{"  "}
-                  <a className="text-orange-500" href="register-13.html">
+                  <Link className="text-orange-500" to="/register">
                     أنشاء حساب
-                  </a>
+                  </Link>
                 </p>
               </div>
             </div>
-            <div className=" py-2">
+            <div className="py-2">
               <p className="text-sm text-gray-500 text-center mb-0">
                 Copyright © 2024{" "}
                 <a href="#" className="text-blue-500">

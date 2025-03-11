@@ -1,15 +1,22 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Stripe from "../Stripe";
 import withAuth from "../../HOC/withAuth";
+import { StoreContext } from "../../context/AuthContext copy";
+import { PlanType } from "../../types";
 
 const PlanDetails = () => {
   const params = useParams();
-  const priceId = params.id;
+  const planId = params.id;
   const [showCheckout, setShowCheckout] = useState(false); // Toggle StripeCheckout
+  const { plans } = useContext(StoreContext);
+  const [plan, setPlan] = useState<PlanType>();
 
+  useEffect(() => {
+    setPlan(plans.find((p) => p._id == planId));
+  }, [plans, planId, plan]);
   if (showCheckout) {
-    return priceId && <Stripe priceId={priceId} />;
+    return planId && <Stripe planId={planId} />;
   }
   return (
     <section className="py-24">
@@ -46,8 +53,11 @@ const PlanDetails = () => {
           </div>
           <div className="w-full lg:w-1/2 p-4">
             <div className="p-10 bg-orange-500 rounded-3xl text-white">
+            <h2 className="text-xl lg:text-2xl font-bold font-heading mb-6">
+                {plan?.price} جنية
+              </h2>
               <h2 className="text-4xl lg:text-6xl font-bold font-heading mb-6">
-                $4/month
+                 خلال{plan?.period} أشهر
               </h2>
               <p className="mb-10">
                 أكثر من 350 مستخدمًا مشتركين في هذه الخطة.

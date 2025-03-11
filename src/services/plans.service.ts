@@ -26,6 +26,17 @@ const plansService = {
       // return thunkAPI.rejectWithValue(axiosError?.response?.data);
     }
   },
+  findOne: async () => {
+    try {
+      const response = await axios.get("http://localhost:3000/plans");
+
+      return response.data;
+    } catch (error) {
+      // const axiosError = error as AxiosError;
+      console.log(axios);
+      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+    }
+  },
   update: async (data: PlanType | null) => {
     try {
       if (!data) return new Error("data is null");

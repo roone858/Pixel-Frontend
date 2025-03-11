@@ -8,6 +8,7 @@ import SubscriptionsTable from "../../component/dashboardComponent/SubscriptionT
 import PhotosTable from "../../component/dashboardComponent/PhotosTable";
 import Sidebar from "../../component/dashboardComponent/Sidebar";
 import { StoreContext } from "../../context/AuthContext copy";
+import withAdminAuth from "../../HOC/withAdminAuth";
 
 const Dashboard = () => {
   const { images, plans } = useContext(StoreContext);
@@ -27,7 +28,7 @@ const Dashboard = () => {
       try {
         const [usersRes, subRes] = await Promise.all([
           axios.get("http://localhost:3000/users"),
-          axios.get("http://localhost:3000/subscription"),
+          axios.get("http://localhost:3000/subscription/all"),
         ]);
 
         setUsers(usersRes.data);
@@ -72,5 +73,5 @@ const Dashboard = () => {
     </div>
   );
 };
-
-export default Dashboard;
+const ProtectedDashboard = withAdminAuth(Dashboard);
+export default ProtectedDashboard;

@@ -9,12 +9,12 @@ const stripePromise = loadStripe(
   "pk_test_51OM8bHDLQcvajEnuuNf6qIKGtgejp1tBjhQzN5NlcjErrePK9prFIVrJNiSuJ39RhrFtZo1EU1gy1WLqLL9TORWT00hoBBBcZ5"
 );
 
-const Stripe = ({ priceId }: { priceId: string }) => {
+const Stripe = ({ planId }: { planId: string }) => {
   const [showConfirmation, setShowConfirmation] = useState(false); // Toggle StripeCheckout
 
   if (showConfirmation) {
     return (
-      priceId && <SubscriptionPaymentSuccess subscriptionPlan={"priceId"} />
+      planId && <SubscriptionPaymentSuccess planId={"planId"} />
     );
   }
   return (
@@ -29,7 +29,7 @@ const Stripe = ({ priceId }: { priceId: string }) => {
           >
             <CheckoutForm
               setShowConfirmation={setShowConfirmation}
-              priceId={priceId}
+              planId={planId}
             />
           </Elements>
         </div>
