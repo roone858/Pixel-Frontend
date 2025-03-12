@@ -7,7 +7,7 @@ import StatsCards from "../../component/dashboardComponent/StatsCards";
 import SubscriptionsTable from "../../component/dashboardComponent/SubscriptionTable";
 import PhotosTable from "../../component/dashboardComponent/PhotosTable";
 import Sidebar from "../../component/dashboardComponent/Sidebar";
-import { StoreContext } from "../../context/AuthContext copy";
+import { StoreContext } from "../../context/StoreContext";
 import withAdminAuth from "../../HOC/withAdminAuth";
 
 const Dashboard = () => {

@@ -1,11 +1,13 @@
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { PlanType } from "../../../types";
-import { useState } from "react";
 import plansService from "../../../services/plans.service";
+import { useStoreContext } from "../../../context/StoreContext";
+import { useState } from "react";
 
 const PaymentPlansTable = ({ plans }: { plans: PlanType[] }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<PlanType | null>(null);
+  const { updatePlans } = useStoreContext();
 
   const openLightbox = (plan: PlanType) => {
     setSelectedPlan(plan);
@@ -42,7 +44,8 @@ const PaymentPlansTable = ({ plans }: { plans: PlanType[] }) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await plansService.update(selectedPlan);
+    const newPlan = await plansService.update(selectedPlan);
+    updatePlans(plans.map((p) => (p._id == newPlan._id ? newPlan : p)));
     closeLightbox();
   };
 

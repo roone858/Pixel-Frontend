@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "../../page/LoadingPage";
 
 const AuthCallback = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const AuthCallback = () => {
     }
   }, [navigate, token]);
 
-  return <h2>Authenticating...</h2>;
+  return <LoadingPage />;
 };
 
 export default AuthCallback;

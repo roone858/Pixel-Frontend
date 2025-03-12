@@ -5,6 +5,7 @@ import {
   createContext,
   useEffect,
   useState,
+  useCallback,
 } from "react";
 import { getTokenInSessionStorage } from "../../utils/sessionStorage";
 import authService from "../../services/auth.service";
@@ -13,8 +14,9 @@ import { UserType } from "../../types";
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  user: UserType; // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  user: UserType;
   setIsAuthenticated: Dispatch<SetStateAction<boolean>>;
+  updateUser: Dispatch<SetStateAction<UserType>>;
   loading: boolean;
 }
 
@@ -30,6 +32,7 @@ export const AuthContext = createContext<AuthContextType>({
     username: "",
   },
   setIsAuthenticated: () => undefined,
+  updateUser: () => undefined,
   loading: true, // Default to loading
 });
 
@@ -46,27 +49,35 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     },
     username: "",
   });
-  const [loading, setLoading] = useState(true); // New loading state
+  const [loading, setLoading] = useState(true);
 
+  const verifyAndFetchUser = useCallback(async () => {
+    try {
+      await authService.verifyToken();
+      setIsAuthenticated(true);
+      const userProfile = await authService.getProfile();
+      setUser(userProfile);
+    } catch (error) {
+      setIsAuthenticated(false);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  const updateUser = (user: UserType) => {
+    setUser(user);
+  };
   useEffect(() => {
     setTokenInAxios();
     if (getTokenInSessionStorage()) {
-      authService
-        .verifyToken()
-        .then(() => {
-          setIsAuthenticated(true);
-          authService.getProfile().then((user) => setUser(user));
-        })
-        .catch(() => setIsAuthenticated(false))
-        .finally(() => setLoading(false)); // Mark loading as complete
+      verifyAndFetchUser();
     } else {
       setLoading(false); // No token, no need to wait
     }
-  }, []);
+  }, [verifyAndFetchUser]);
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, setIsAuthenticated, loading }}
+      value={{ isAuthenticated, user, setIsAuthenticated, loading, updateUser }}
     >
       {children}
     </AuthContext.Provider>

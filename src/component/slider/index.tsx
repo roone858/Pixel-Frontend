@@ -52,7 +52,7 @@ const GallerySlider: React.FC<GallerySliderProps> = ({ images }) => {
                 <div key={index} className="swiper-slide max-w-[319px] grid">
                   <img
                     className="w-full rounded-xl h-64 object-cover"
-                    src={`http://localhost:3000/resource/${image.fileName}?token=${authToken}`}
+                    src={`http://localhost:3000/resources/${image.fileName}?token=${authToken}`}
                     alt={image.title}
                   />
                   <div className="swiper-box text-center mt-5">

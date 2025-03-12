@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { StoreContext } from "../../context/AuthContext copy";
+import { StoreContext } from "../../context/StoreContext";
 import LoadingSpinner from "../LoadingSpinner";
 
 const Gallery = () => {
@@ -37,12 +37,12 @@ const Gallery = () => {
             >
               <img
                 loading="lazy"
-                src={`http://localhost:3000/resource/${image.fileName}?token=${authToken}`}
+                src={`http://localhost:3000/resources/${image.fileName}?token=${authToken}`}
                 alt="Gallery image"
                 className="gallery-image object-cover rounded-3xl hover:grayscale transition-all duration-700 ease-in-out w-full h-full cursor-pointer"
                 onClick={() =>
                   openLightbox(
-                    `http://localhost:3000/resource/${image.fileName}?token=${authToken}`
+                    `http://localhost:3000/resources/${image.fileName}?token=${authToken}`
                   )
                 }
               />

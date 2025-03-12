@@ -2,12 +2,28 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import subscriptionsService from "../../services/subscriptions.service";
-import { StoreContext } from "../../context/AuthContext copy";
+import { StoreContext } from "../../context/StoreContext";
 import NoSubscriptionPage from "../NoSubscriptionPage";
+import { addMonths } from "date-fns";
+import LoadingPage from "../LoadingPage";
 const PlanDetailsPage: React.FC = () => {
   const [currentPlan, setCurrentPlan] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { plans } = useContext(StoreContext);
+
+  const calculateRenewalDate = (plan: any): string => {
+    // تحويل تاريخ الإنشاء إلى كائن Date
+    const createdAtDate = new Date(plan.createdAt);
+
+    const renewalDate = addMonths(createdAtDate, plan.period);
+
+    return renewalDate.toLocaleDateString("ar-EG", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
   useEffect(() => {
     setIsLoading(true);
     const fetchPlanDetails = async () => {
@@ -19,16 +35,19 @@ const PlanDetailsPage: React.FC = () => {
         setCurrentPlan({
           ...plan,
           status: sub.status,
-          createdAt: sub.createdAt,
+          createdAt: calculateRenewalDate({
+            period: plan.period,
+            createdAt: sub.createdAt,
+          }),
         });
+      setIsLoading(false);
     };
 
     fetchPlanDetails();
-    setIsLoading(false);
   }, [plans]);
 
-  if (isLoading) return <div>جاري تحميل تفاصيل الخطة...</div>;
-  if (!currentPlan) return <NoSubscriptionPage />;
+  if (isLoading) return <LoadingPage />;
+  if (!currentPlan && !isLoading) return <NoSubscriptionPage />;
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">

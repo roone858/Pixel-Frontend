@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Stripe from "../Stripe";
 import withAuth from "../../HOC/withAuth";
-import { StoreContext } from "../../context/AuthContext copy";
+import { StoreContext } from "../../context/StoreContext";
 import { PlanType } from "../../types";
 
 const PlanDetails = () => {

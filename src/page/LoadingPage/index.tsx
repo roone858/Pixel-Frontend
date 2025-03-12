@@ -1,15 +1,14 @@
 import React from "react";
 
-const LoadingSpinner: React.FC = () => {
+const LoadingPage: React.FC = () => {
   return (
-    <div className="flex items-center justify-center w-full h-full">
-      <div className="grid gap-3">
+    <div className="flex  flex-col items-center justify-center w-full h-screen">
         <div className="flex items-center justify-center">
           <svg
             className="animate-spin border-orange-600"
             xmlns="http://www.w3.org/2000/svg"
-            width="40"
-            height="40"
+            width="76"
+            height="75"
             viewBox="0 0 76 75"
             fill="none"
           >
@@ -45,12 +44,11 @@ const LoadingSpinner: React.FC = () => {
             </defs>
           </svg>
         </div>
-        <span className="text-orange-600 text-sm font-normal leading-snug">
-          جارى التحميل ...
+        <span className="text-orange-600 text-xl font-normal leading-snug">
+     جارى التحميل  ...
         </span>
-      </div>
     </div>
   );
 };
 
-export default LoadingSpinner;
+export default LoadingPage;

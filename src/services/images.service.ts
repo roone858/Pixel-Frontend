@@ -1,59 +1,54 @@
-// import { AxiosError } from "axios";
-
 import { ImageType } from "../types";
 import axios from "../utils/axios";
 
 const imagesService = {
   create: async (data: unknown) => {
     try {
-      const response = await axios.post("http://localhost:3000/resurces", data);
-
+      const response = await axios.post(
+        "http://localhost:3000/resources",
+        data
+      );
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(error);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error creating resource:", error);
+      return null;
     }
   },
+
   getAll: async (): Promise<ImageType[]> => {
     try {
-      const response = await axios.get("http://localhost:3000/resource");
-
+      const response = await axios.get("http://localhost:3000/resources");
       return response.data;
     } catch (error) {
-      console.error(axios);
+      console.error("Error fetching resources:", error);
       return [];
     }
   },
+
   update: async (data: ImageType | null) => {
+    if (!data) return new Error("Data is null");
     try {
-      if (!data) return new Error("data is null");
       const response = await axios.patch(
-        "http://localhost:3000/resource/" + data._id,
+        `http://localhost:3000/resources/${data._id}`,
         data
       );
-
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(axios);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error updating resource:", error);
+      return null;
     }
   },
 
   upload: async (
     formData: FormData,
-    setUploadProgress: (number: number) => void
+    setUploadProgress: (progress: number) => void
   ) => {
-    //
     try {
       const response = await axios.post(
-        "http://localhost:3000/resource/upload",
+        "http://localhost:3000/resources/upload",
         formData,
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+          headers: { "Content-Type": "multipart/form-data" },
           onUploadProgress: (progressEvent) => {
             if (progressEvent.total) {
               setUploadProgress(
@@ -65,40 +60,10 @@ const imagesService = {
       );
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(axios);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error uploading file:", error);
+      return null;
     }
-  },
-  checkUsernameExists: async (newUsername: string) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/images/check-username",
-        {
-          username: newUsername,
-        }
-      );
-      return response.data.isTaken;
-    } catch (error) {
-      console.error("Error checking username:", error);
-    }
-  },
-  checkEmailExists: async (email: string) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/images/check-email",
-        {
-          email: email,
-        }
-      );
-      return response.data.isExists;
-    } catch (error) {
-      console.error("Error checking email:", error);
-    }
-  },
-  verifyToken: async () => {
-    const res = await axios.get("http://localhost:3000/images/verify-token");
-    return res;
   },
 };
+
 export default imagesService;

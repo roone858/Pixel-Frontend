@@ -27,7 +27,7 @@ const ImageList = () => {
           className="image-container w-60 h-60 shadow overflow-hidden  border "
         >
           <Image
-            src={"http://localhost:3000/resource/" + image.fileName}
+            src={"http://localhost:3000/resources/" + image.fileName}
             alt={`Image ${index}`}
             loading="lazy"
             className="object-cover h-full border mx-auto"

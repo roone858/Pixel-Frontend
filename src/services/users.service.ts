@@ -1,5 +1,3 @@
-// import { AxiosError } from "axios";
-
 import { ImageType, UserType } from "../types";
 import axios from "../utils/axios";
 
@@ -7,39 +5,35 @@ const usersService = {
   create: async (data: unknown) => {
     try {
       const response = await axios.post("http://localhost:3000/users", data);
-
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(error);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error creating user:", error);
+      return null;
     }
   },
+
   getAll: async (): Promise<ImageType[]> => {
     try {
       const response = await axios.get("http://localhost:3000/users");
-
       return response.data;
     } catch (error) {
-      console.error(axios);
+      console.error("Error fetching users:", error);
       return [];
     }
   },
+
   update: async (data: UserType | null, profilePicture: File | null) => {
     try {
+      if (!data) throw new Error("Data is null");
+
       if (!profilePicture) {
-        if (!data) return new Error("!Data is null");
-        const response = await axios.patch(
-          "http://localhost:3000/users/" + data._id,
-          data
-        );
-        return response;
+        const response = await axios.patch(`http://localhost:3000/users`, data);
+        return response.data;
       }
 
       const formData = new FormData();
-
-      formData.append("image", profilePicture); // "file" should match the backend field name
-      if (data) formData.append("updatedUser", JSON.stringify(data)); // "file" should match the backend field name
+      formData.append("image", profilePicture);
+      formData.append("updatedUser", JSON.stringify(data));
 
       const response = await axios.post(
         "http://localhost:3000/users/profile-picture",
@@ -51,24 +45,20 @@ const usersService = {
         }
       );
 
-      console.log("File uploaded successfully:", response.data);
-
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(axios);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error updating user:", error);
+      return null;
     }
   },
 
   upload: async (
     formData: FormData,
-    setUploadProgress: (number: number) => void
+    setUploadProgress: (progress: number) => void
   ) => {
-    //
     try {
       const response = await axios.post(
-        "http://localhost:3000/resource/upload",
+        "http://localhost:3000/resources/upload",
         formData,
         {
           headers: {
@@ -85,40 +75,48 @@ const usersService = {
       );
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(axios);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error uploading file:", error);
+      return null;
     }
   },
+
   checkUsernameExists: async (newUsername: string) => {
     try {
       const response = await axios.post(
         "http://localhost:3000/users/check-username",
-        {
-          username: newUsername,
-        }
+        { username: newUsername }
       );
-      return response.data.isTaken;
+      return response.data?.isTaken ?? false;
     } catch (error) {
       console.error("Error checking username:", error);
+      return false;
     }
   },
+
   checkEmailExists: async (email: string) => {
     try {
       const response = await axios.post(
         "http://localhost:3000/users/check-email",
-        {
-          email: email,
-        }
+        { email }
       );
-      return response.data.isExists;
+      return response.data?.isExists ?? false;
     } catch (error) {
       console.error("Error checking email:", error);
+      return false;
     }
   },
+
   verifyToken: async () => {
-    const res = await axios.get("http://localhost:3000/users/verify-token");
-    return res;
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/users/verify-token"
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error verifying token:", error);
+      return null;
+    }
   },
 };
+
 export default usersService;

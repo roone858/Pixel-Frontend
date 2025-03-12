@@ -2,6 +2,8 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { ImageType, UserType } from "../../../types";
 import { useState } from "react";
 import imagesService from "../../../services/images.service";
+import { useStoreContext } from "../../../context/StoreContext";
+import LoadingSpinner from "../../LoadingSpinner";
 
 const PhotosTable = ({
   images,
@@ -13,7 +15,8 @@ const PhotosTable = ({
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<ImageType | null>(null);
   const [input, setInput] = useState<string>("");
-
+  const { updateImages, isLoading } = useStoreContext();
+  isLoading && <LoadingSpinner />;
   const openLightbox = (image: ImageType) => {
     setSelectedImage(image);
     setLightboxOpen(true);
@@ -51,8 +54,10 @@ const PhotosTable = ({
     e.preventDefault();
     if (selectedImage) {
       try {
-        await imagesService.update(selectedImage);
-        console.log("Image updated successfully:", selectedImage);
+        const newImage = await imagesService.update(selectedImage);
+        updateImages(
+          images.map((img) => (img._id == newImage._id ? newImage : img))
+        );
         closeLightbox();
       } catch (error) {
         console.error("Failed to update image:", error);
@@ -73,7 +78,6 @@ const PhotosTable = ({
         tags: [...selectedImage.tags, trimmedInput],
       });
       setInput("");
-      console.log(selectedImage.tags);
     }
   };
 
@@ -105,7 +109,7 @@ const PhotosTable = ({
                 <div className="flex flex-row-reverse justify-end items-center">
                   <span>{image.title}</span>
                   <img
-                    src={`http://localhost:3000/resource/${image.fileName}`}
+                    src={`http://localhost:3000/resources/${image.fileName}`}
                     alt={image.title}
                     className="w-24 rounded-md border-2 ml-3 border-gray-300 dark:border-gray-600"
                     loading="lazy"

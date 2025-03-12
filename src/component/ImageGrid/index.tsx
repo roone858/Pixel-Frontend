@@ -18,7 +18,7 @@ const ImageGrid = ({ images }: { images: ImageDetails[] }) => {
               <div key={index}>
                 <Image
                   className="h-auto max-w-full rounded-lg"
-                  src={"http://localhost:3000/resource/" + image.fileName}
+                  src={"http://localhost:3000/resources/" + image.fileName}
                   alt={`Image ${groupIndex * 3 + index + 1}`}
                 />
               </div>

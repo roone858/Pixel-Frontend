@@ -1,8 +1,11 @@
 import { ComponentType, FC, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import LoadingPage from "../../page/LoadingPage";
 
-const withAuth = <P extends object>(WrappedComponent: ComponentType<P>): FC<P> => {
+const withAuth = <P extends object>(
+  WrappedComponent: ComponentType<P>
+): FC<P> => {
   const AuthWrapper: FC<P> = (props) => {
     const { isAuthenticated, loading } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -13,7 +16,7 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>): FC<P> =
       }
     }, [isAuthenticated, loading, navigate]);
 
-    if (loading) return <p>Loading...</p>; // Show a loading state while authentication is being verified.
+    if (loading) return <LoadingPage />; 
     if (!isAuthenticated) return null;
 
     return <WrappedComponent {...props} />;

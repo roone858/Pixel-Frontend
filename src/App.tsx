@@ -14,8 +14,9 @@ import Footer from "./component/Footer";
 import Settings from "./page/ProfileSetting";
 import Dashboard from "./page/Dashboard";
 import Sidebar from "./component/Profile";
-import { StoreProvider } from "./context/AuthContext copy";
+import { StoreProvider } from "./context/StoreContext";
 import PlanDetailsPage from "./page/PlanDetailsPage";
+import EmailConfirmedPage from "./page/EmailConfirmedPage";
 
 function App() {
   return (
@@ -37,6 +38,10 @@ function App() {
               />
               <Route path="/auth/callback" element={<AuthCallback />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route
+                path="/success-confirmed-email"
+                element={<EmailConfirmedPage />}
+              />
               <Route path="/upload" element={<FileUpload />} />
               <Route path="/my-plan" element={<PlanDetailsPage />} />
               <Route path="/register" element={<Register />} />

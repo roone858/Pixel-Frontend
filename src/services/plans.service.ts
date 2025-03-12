@@ -1,5 +1,3 @@
-// import { AxiosError } from "axios";
-
 import { PlanType } from "../types";
 import axios from "../utils/axios";
 
@@ -7,92 +5,46 @@ const plansService = {
   create: async (data: unknown) => {
     try {
       const response = await axios.post("http://localhost:3000/plans", data);
-
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(error);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error creating plan:", error);
+      return null;
     }
   },
-  getAll: async () => {
+
+  getAll: async (): Promise<PlanType[]> => {
     try {
       const response = await axios.get("http://localhost:3000/plans");
-
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(axios);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error fetching plans:", error);
+      return [];
     }
   },
-  findOne: async () => {
+
+  findOne: async (): Promise<PlanType | null> => {
     try {
       const response = await axios.get("http://localhost:3000/plans");
-
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(axios);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error finding plan:", error);
+      return null;
     }
   },
+
   update: async (data: PlanType | null) => {
+    if (!data) return new Error("Data is null");
     try {
-      if (!data) return new Error("data is null");
       const response = await axios.patch(
-        "http://localhost:3000/plans/" + data._id,
+        `http://localhost:3000/plans/${data._id}`,
         data
       );
-
       return response.data;
     } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(axios);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
+      console.error("Error updating plan:", error);
+      return null;
     }
-  },
-
-  getProfile: async () => {
-    //
-    try {
-      const response = await axios.get("http://localhost:3000/plans/profile");
-      return response.data;
-    } catch (error) {
-      // const axiosError = error as AxiosError;
-      console.log(axios);
-      // return thunkAPI.rejectWithValue(axiosError?.response?.data);
-    }
-  },
-  checkUsernameExists: async (newUsername: string) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/plans/check-username",
-        {
-          username: newUsername,
-        }
-      );
-      return response.data.isTaken;
-    } catch (error) {
-      console.error("Error checking username:", error);
-    }
-  },
-  checkEmailExists: async (email: string) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3000/plans/check-email",
-        {
-          email: email,
-        }
-      );
-      return response.data.isExists;
-    } catch (error) {
-      console.error("Error checking email:", error);
-    }
-  },
-  verifyToken: async () => {
-    const res = await axios.get("http://localhost:3000/plans/verify-token");
-    return res;
   },
 };
+
 export default plansService;
